@@ -1,0 +1,90 @@
+﻿@* 
+    Importa el espacio de nombres Miscelaneos para poder hacer uso tanto de 
+    las clases como los métodos de las clases en ese espacio.
+*@
+@using RRHH_TestAplication.Miscelaneos
+
+
+@*
+    Inyecta una instancia IHttpContextAccessor para acceder al Contexto actual HTTP
+    Esto nos permite tener información sobre el usuario y su dirección IP
+*@
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
+@*
+    Se declara una variable "tema", esta almacenara la configuración del tema
+    por defecto configurado en la aplicación.
+    Se utiliza un bucle foreach para iterar sobre todas las cookies presentes 
+    en la solicitud HTTP actual. HttpContextAccessor.HttpContext.Request.Cookies 
+    proporciona acceso a las cookies enviadas por el cliente (navegador).
+    Dentro del bucle, se verifica si la clave de la cookie actual es "dx-theme". 
+    Esta clave específica se utiliza para identificar una cookie que contiene 
+    el tema seleccionado por el usuario.
+    Si se encuentra una cookie con la clave "dx-theme", el valor de tema se 
+    actualiza con el valor de esa cookie. Esto significa que el tema predeterminado 
+    se sobrescribe con el tema seleccionado por el usuario, si existe.
+*@
+@{
+    var tema = Propiedades._gTemaDefault;
+
+    foreach(var cookie in HttpContextAccessor.HttpContext.Request.Cookies)
+    {
+        if (cookie.Key == "dx-theme")
+        {
+            tema = cookie.Value;
+        }
+    } 
+}
+
+
+@*
+    Estructura del LayoutOut base. Se obtiene de la clase propiedades
+    el nombre del sistema.
+*@
+<DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8"/>  
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="description" content="Aplicación web para evaluación de test de reclutamiento. @(Propiedades._gNombreSistema)"/>
+        <meta name="author" content="GMSB @(Propiedades._gNombreSistema)"/>
+
+        <title>@ViewData["Titulo"] - @(Propiedades._gNombreSistema)</title>
+
+        <link href="~/imgs/icono.ico" rel="shortcut icon" type="image/x-icon"/>
+
+        @* Estilos CSS *@
+        <link href="~/css/devextreme/bootstrap.css" rel="stylesheet" />
+        <link href="~/css/devextreme/dx.common.css" rel="stylesheet" />
+        <link rel="dx-theme" data-theme="RRHH_TestAplication" href="~/css/devextreme/dx.RRHH_TestAplication.css" data-active="@(tema == "RRHH_TestAplication" ? "true" : "false")">
+        <link rel="dx-theme" data-theme="darkRRHH_TestAplication" href="~/css/devextreme/dx.darkRRHH_TestAplication.css" data-active="@(tema == "darkRRHH_TestAplication" ? "true" : "false")">
+        <link rel="dx-theme" data-theme="RRHH_TestAplication.compact" href="~/css/devextreme/dx.RRHH_TestAplication.compact.css" data-active="@(tema == "RRHH_TestAplication.compact" ? "true" : "false")">
+        <link rel="dx-theme" data-theme="darkRRHH_TestAplication.compact" href="~/css/devextreme/dx.darkRRHH_TestAplication.compact.css" data-active="@(tema == "darkRRHH_TestAplication.compact" ? "true" : "false")">
+
+
+        <link href="~/css/global/toastr.css" rel="stylesheet" />
+        @RenderSection("Estilos", required: false)
+
+    </head>
+    <body>
+            @RenderBody()
+
+        <script src="~/js/devextreme/jquery.js"></script>
+        <script src="~/js/devextreme/bootstrap.js"></script>
+        <script src="~/js/devextreme/dx.all.js"></script>
+        <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+        <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+        <script src="~/js/devextreme/localization/dx.intl.js"></script>
+        <script src="~/js/devextreme/localization/dx.messages.es.js"></script>
+        <script src="~/js/global/Toastr.js"></script>
+
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>
+
+
+
+

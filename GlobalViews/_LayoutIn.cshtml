@@ -1,0 +1,76 @@
+﻿@using RRHH_TestAplication.Miscelaneos
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var tema = Propiedades._gTemaDefault;
+    foreach (var cookie in HttpContextAccessor.HttpContext.Request.Cookies)
+    {
+        if (cookie.Key == "dx-theme")
+        {
+            tema = cookie.Value;
+        }
+    }
+
+    var drawerAbierto = true;
+    foreach (var cookie in HttpContextAccessor.HttpContext.Request.Cookies)
+    {
+        if (cookie.Key == "dx-drawer-state")
+        {
+            drawerAbierto = (cookie.Value == "SI");
+        }
+    }
+}
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Aplicación WEB GGM(@(Propiedades._gNombreSistema))">
+    <meta name="author" content="GGM(@(Propiedades._gNombreSistema))">
+
+    <title>@ViewData["Titulo"] - @(Propiedades._gNombreSistema)</title>
+
+    <title>@ViewData["Titulo"] - @(Propiedades._gNombreSistema)</title>
+
+    <link href="~/imgs/icono.ico" rel="shortcut icon" type="image/x-icon" />
+
+    @* Estilos CSS *@
+    <link href="~/css/devextreme/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/devextreme/dx.common.css" rel="stylesheet" />
+    <link rel="dx-theme" data-theme="RRHH_TestAplication" href="~/css/devextreme/dx.RRHH_TestAplication.css" data-active="@(tema == "RRHH_TestAplication" ? "true" : "false")">
+    <link rel="dx-theme" data-theme="darkRRHH_TestAplication" href="~/css/devextreme/dx.darkRRHH_TestAplication.css" data-active="@(tema == "darkRRHH_TestAplication" ? "true" : "false")">
+    <link rel="dx-theme" data-theme="RRHH_TestAplication.compact" href="~/css/devextreme/dx.RRHH_TestAplication.compact.css" data-active="@(tema == "RRHH_TestAplication.compact" ? "true" : "false")">
+    <link rel="dx-theme" data-theme="darkRRHH_TestAplication.compact" href="~/css/devextreme/dx.darkRRHH_TestAplication.compact.css" data-active="@(tema == "darkRRHH_TestAplication.compact" ? "true" : "false")">
+    <link href="~/css/global/style.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/global/toastr.css" rel="stylesheet" />
+
+    @RenderSection("Estilos", required: false)
+</head>
+<body>
+
+
+    @RenderBody()
+
+
+
+
+    @* CÓDIGO JAVASCRIPT *@
+    <script src="~/js/devextreme/jquery.js"></script>
+    <script src="~/js/devextreme/bootstrap.js"></script>
+    <script src="~/js/devextreme/dx.all.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+    <script src="~/js/devextreme/localization/dx.intl.js"></script>
+    <script src="~/js/devextreme/localization/dx.messages.es.js"></script>
+    <script src="~/js/global/JQcookies.js"></script>
+    <script src="~/js/global/source.js" asp-append-version="true"></script>
+    <script src="~/js/global/Toastr.js"></script>
+
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Archivos de configuración locales de ASP.NET Core
+appsettings.Development.json
+appsettings.json
+
+# Archivos específicos de Visual Studio
+.vs/
+.vscode/
+
+# Archivos de build y binarios generados por el sistema
+bin/
+obj/
